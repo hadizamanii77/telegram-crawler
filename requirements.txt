@@ -1,0 +1,6 @@
+pyaes==1.6.1
+pyasn1==0.4.8
+rsa==4.0
+# Editable Git install with no remote (telegram-billionaire-bot==1.0)
+-e /home/hadi/Desktop/telegram_billionaire
+Telethon==1.11.3
