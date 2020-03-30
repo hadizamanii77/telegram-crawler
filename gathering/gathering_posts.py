@@ -21,7 +21,7 @@ class TelegramPostCollector:
             entity = PeerChannel(int(channel_identifier))
         else:
             entity = channel_identifier
-        channel = self.client.get_entity(entity)
+        channel = await self.client.get_entity(entity)
         return channel
 
     async def collect_posts(self, channel_identifier):
