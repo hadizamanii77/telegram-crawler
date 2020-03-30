@@ -4,3 +4,4 @@ venv
 *.session
 config.ini
 *.pyc
+result

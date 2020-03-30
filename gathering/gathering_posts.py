@@ -1,7 +1,7 @@
 import asyncio
 
 from global_utils.connect import TelegramConnection
-
+from global_utils.save import MessageSaver
 from telethon.tl.functions.messages import (GetHistoryRequest)
 from telethon.tl.types import (PeerChannel)
 
@@ -25,6 +25,7 @@ class TelegramPostCollector:
         return channel
 
     async def collect_posts(self, channel_identifier):
+        message_saver = MessageSaver(channel_identifier)
         channel = await self.get_channel(channel_identifier)
         offset_id = 0
         total_message = 0
@@ -48,5 +49,6 @@ class TelegramPostCollector:
             messages = history.messages
             offset_id = messages[len(messages) - 1].id
             total_message += len(messages)
+            message_saver.save_messages(messages)
             if total_message >= self.total_count_limit:
                 break
