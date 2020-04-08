@@ -7,11 +7,12 @@ from telethon.tl.types import (PeerChannel)
 
 
 class TelegramPostCollector:
-    def __init__(self):
+    def __init__(self,finish_date_time = None):
         self.limit = 100
         self.total_count_limit = 1000
         self.telegram_connection = TelegramConnection()
         self.client = None
+        self.finish_date_time = finish_date_time
     async def get_client(self):
         return await self.telegram_connection.get_client()
 
@@ -50,6 +51,6 @@ class TelegramPostCollector:
             offset_id = messages[len(messages) - 1].id
             total_message += len(messages)
             print("{} message fetched.".format(total_message))
-            message_saver.save_messages(messages)
+            message_saver.save_messages(messages,self.finish_date_time)
             if total_message >= self.total_count_limit:
                 break
