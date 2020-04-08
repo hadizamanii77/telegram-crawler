@@ -17,8 +17,6 @@ class TelegramPostCollector:
     async def get_client(self):
         return await self.telegram_connection.get_client()
 
-    async def close_client_session(self):
-        await self.client.session.close()
 
     async def get_channel(self, channel_identifier):
         if channel_identifier.isdigit():
@@ -58,4 +56,3 @@ class TelegramPostCollector:
             message_saver.save_messages(messages,self.finish_date_time)
             if total_message >= self.total_count_limit:
                 break
-        await self.close_client_session()
