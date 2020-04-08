@@ -11,4 +11,4 @@ def gather_posts(list_of_channels):
     for channel in list_of_channels:
         print("channel {} start fetching".format(channel))
         telegram_collector = TelegramPostCollector()
-        asyncio.run(telegram_collector.collect_posts(channel))
+        telegram_collector.collect_posts(channel)

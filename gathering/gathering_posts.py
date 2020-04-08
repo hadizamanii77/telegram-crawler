@@ -25,6 +25,7 @@ class TelegramPostCollector:
         return channel
 
     async def collect_posts(self, channel_identifier):
+        print("start")
         message_saver = MessageSaver(channel_identifier)
         channel = await self.get_channel(channel_identifier)
         offset_id = 0
@@ -49,6 +50,7 @@ class TelegramPostCollector:
             messages = history.messages
             offset_id = messages[len(messages) - 1].id
             total_message += len(messages)
+            print("{} message fetched.".format(total_message))
             message_saver.save_messages(messages)
             if total_message >= self.total_count_limit:
                 break
