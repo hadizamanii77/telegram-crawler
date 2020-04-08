@@ -1,14 +1,6 @@
-import asyncio
-
-from celery import Celery
 from gathering.gathering_posts import TelegramPostCollector
 
-app = Celery('tasks', broker='amqp://guest@localhost//',backend='amqp',)
 
-
-@app.task
-def gather_posts(list_of_channels):
-    for channel in list_of_channels:
-        print("channel {} start fetching".format(channel))
-        telegram_collector = TelegramPostCollector()
-        asyncio.run(telegram_collector.collect_posts(channel))
+async def gather_posts(channel_addr):
+    telegram_collector = TelegramPostCollector()
+    await telegram_collector.collect_posts(channel_addr)
