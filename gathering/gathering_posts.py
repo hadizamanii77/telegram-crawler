@@ -44,7 +44,7 @@ class TelegramPostCollector:
                     )
                 )
             )
-            if not history.messages:
+            if not history.messages or len(history.messages) == 0:
                 break
             messages = history.messages
             offset_id = messages[len(messages) - 1].id
