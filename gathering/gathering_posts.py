@@ -11,10 +11,9 @@ class TelegramPostCollector:
         self.limit = 100
         self.total_count_limit = 1000
         self.telegram_connection = TelegramConnection()
-        self.client = self.get_client()
-
-    def get_client(self):
-        return self.telegram_connection.get_client()
+        self.client = None
+    async def get_client(self):
+        return await self.telegram_connection.get_client()
 
     async def get_channel(self, channel_identifier):
         if channel_identifier.isdigit():
@@ -25,7 +24,7 @@ class TelegramPostCollector:
         return channel
 
     async def collect_posts(self, channel_identifier):
-        print("start")
+        self.client = await self.get_client()
         message_saver = MessageSaver(channel_identifier)
         channel = await self.get_channel(channel_identifier)
         offset_id = 0

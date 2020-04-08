@@ -23,10 +23,10 @@ class TelegramConnection:
         self.phone = phone
         self.username = username
 
-    def get_client(self):
+    async def get_client(self):
         try:
             client = TelegramClient(self.username, api_id=self.api_id, api_hash=self.api_hash)
-            client.start()
+            await client.start()
             return client
         except Exception as e:
             print(e)
