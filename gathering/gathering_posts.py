@@ -17,6 +17,8 @@ class TelegramPostCollector:
     async def get_client(self):
         return await self.telegram_connection.get_client()
 
+    def close_client_session(self):
+        self.client.session.close()
 
     async def get_channel(self, channel_identifier):
         if channel_identifier.isdigit():
