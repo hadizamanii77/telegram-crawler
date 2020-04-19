@@ -1,15 +1,16 @@
-import asyncio
+import datetime
 
 from global_utils.connect import TelegramConnection
 from global_utils.save import MessageSaver
 from telethon.tl.functions.messages import (GetHistoryRequest)
 from telethon.tl.types import (PeerChannel)
 
+today = str(datetime.datetime.now())[:10]
+
 
 class TelegramPostCollector:
-    def __init__(self,finish_date_time = None):
+    def __init__(self,finish_date_time=today):
         self.limit = 100
-        self.total_count_limit = 1000
         self.telegram_connection = TelegramConnection()
         self.client = None
         self.finish_date_time = finish_date_time
@@ -55,6 +56,15 @@ class TelegramPostCollector:
             offset_id = messages[len(messages) - 1].id
             total_message += len(messages)
             print("{} message fetched.".format(total_message))
+            messages_before_finish_datetime = []
+            finish = False
+            for message in messages:
+                if self.finish_date_time is not None and str(message.date)[
+                                                    :10] >= self.finish_date_time:  # it should go to upper layer
+                    messages_before_finish_datetime.append(message)
+                else:
+                    finish = True
+                    break
             message_saver.save_messages(messages,self.finish_date_time)
-            if total_message >= self.total_count_limit:
+            if finish:
                 break
