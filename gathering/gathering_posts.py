@@ -65,6 +65,6 @@ class TelegramPostCollector:
                 else:
                     finish = True
                     break
-            message_saver.save_messages(messages,self.finish_date_time)
+            message_saver.save_messages(messages_before_finish_datetime)
             if finish:
                 break
