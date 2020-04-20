@@ -1,10 +1,11 @@
 import asyncio
 import configparser
 import json
+from sqlite3 import OperationalError
 
 from telethon import TelegramClient
 
-
+client = None
 class TelegramConnection:
 
     def __init__(self):
@@ -24,7 +25,10 @@ class TelegramConnection:
         self.username = username
 
     async def get_client(self):
+        global client
         try:
+            if client is not None:
+                return client
             client = TelegramClient(self.username, api_id=self.api_id, api_hash=self.api_hash)
             await client.start()
             return client

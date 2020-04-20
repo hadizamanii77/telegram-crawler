@@ -8,19 +8,21 @@ app = Quart(__name__)
 @app.websocket('/ws/gather/posts')
 async def gather_posts_api():
     try:
-        channel_addr = await websocket.receive()
+        channel_addr_list = []
+        while True:
+            channel_addr = await websocket.receive()
+            if channel_addr == 'q':
+                break
+            channel_addr_list.append(channel_addr)
+
         await websocket.send(
             "please enter date (YYYY-MM-DD) : today is {}".format(str(datetime.date(datetime.now()))).format(
                 channel_addr))
         finish_date_time = await websocket.receive()
-        await websocket.send("start fetching {} channel".format(channel_addr))
-        await gather_posts(channel_addr, finish_date_time)
-        await websocket.send("finish fetching {} channel".format(channel_addr))
-        await websocket.send(
-            "address : http://194.5.192.130/telegram_files/{date}/{channel_addr}.csv".format(
-                date=str(datetime.date(datetime.now())),
-                channel_addr=channel_addr.split('/')[
-                    -1]))  # this address should get from MessageSaver in next version
+        await websocket.send("start fetching channels")
+        result = await gather_posts(channel_addr_list, finish_date_time)
+        await websocket.send("finish fetching channels")
+        await websocket.send(str(result))
     except Exception as e:
         print(e)
         await websocket.send(
